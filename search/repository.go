@@ -1,5 +1,8 @@
 package search
 
+/*
+	abstract implemntacion for search
+*/
 import (
 	"context"
 	"cqrs/models"
