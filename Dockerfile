@@ -17,6 +17,7 @@ COPY events events
 COPY feed-service feed-service
 COPY means means 
 COPY models models
+COPY query-service query-service
 COPY repository repository
 COPY search search
 
