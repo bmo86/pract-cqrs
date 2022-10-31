@@ -4,7 +4,6 @@ import (
 	"context"
 	"cqrs/models"
 	"database/sql"
-	"log"
 
 	_ "github.com/lib/pq"
 )
@@ -28,21 +27,17 @@ func (repo *PostgresReposytory) Close() {
 }
 
 func (repo *PostgresReposytory) InsertFeed(ctx context.Context, feed *models.Feed) error {
-	_, err := repo.db.ExecContext(ctx, "INSERT INTO feeds (id, tittle, description) VALUES ($1, $2, $3)", feed.ID, feed.Title, feed.Description)
+	_, err := repo.db.ExecContext(ctx, "INSERT INTO feeds (id, title, description) VALUES ($1, $2, $3)", feed.ID, feed.Title, feed.Description)
 	return err
 }
 
 func (repo *PostgresReposytory) ListFeeds(ctx context.Context) ([]*models.Feed, error) {
 	rows, err := repo.db.QueryContext(ctx, "SELECT id, title, description, created_at FROM feeds")
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 
-	defer func() {
-		if err := rows.Close(); err != nil {
-			log.Fatal(err)
-		}
-	}()
+	defer rows.Close()
 
 	feeds := []*models.Feed{}
 
